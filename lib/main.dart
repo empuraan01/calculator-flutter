@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:math_expressions/math_expressions.dart';
+import 'package:function_tree/function_tree.dart';
 
 void main() {
   runApp(const CalculatorApp());
@@ -45,28 +46,16 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
         _input = '';
         _output = '0';
       } else if (buttonText == '=') {
-        try {
-          _output = _evaluateExpression(_input);
-        } catch (e) {
-          _output = 'Error';
-        }
+
+          _output = _input.interpret().toString();
+
       } else {
         _input += buttonText;
       }
     });
   }
 
-  String _evaluateExpression(String expression) {
-    try {
-      Parser p = Parser();
-      Expression exp = p.parse(expression);
-      ContextModel cm = ContextModel();
-      double eval = exp.evaluate(EvaluationType.REAL, cm);
-      return eval.toString();
-    } catch (e) {
-      return 'Error';
-    }
-  }
+
 
   @override
   Widget build(BuildContext context) {
@@ -100,8 +89,8 @@ class _CalculatorScreenState extends State<CalculatorScreen> {
               ),
             ),
           ),
-          _buildButtonRow(['7', '8', '9', '÷']),
-          _buildButtonRow(['4', '5', '6', '×']),
+          _buildButtonRow(['7', '8', '9', '/']),
+          _buildButtonRow(['4', '5', '6', '*']),
           _buildButtonRow(['1', '2', '3', '-']),
           _buildButtonRow(['C', '0', '=', '+']),
         ],
